@@ -1,7 +1,7 @@
 import numpy as np
 
 def get_adjancency_matrix(filePath):
-    
+
     with open(file = filePath, mode = 'r', encoding='utf-8', errors='ignore') as f:
         num_websites, num_connections = map(int, f.readline().split())
 
@@ -21,6 +21,7 @@ def get_adjancency_matrix(filePath):
         return id_to_url, A
 
 def pageRank_simple(id_to_url, adj_matrix):
+    
     num_pages = adj_matrix.shape[1]
 
     link_matrix = np.zeros_like(adj_matrix)
