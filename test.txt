@@ -99,4 +99,3 @@ def pageRank_medium(id_to_url, adj_matrix):
     outgoing = adj_matrix.sum(axis = 0)
 
     #TODO implement modified link matrix based on the paper
-    
