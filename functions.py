@@ -98,5 +98,34 @@ def pageRank_medium(id_to_url, adj_matrix):
 
     outgoing = adj_matrix.sum(axis = 0)
 
-    #TODO implement modified link matrix based on the paper
+    # build link matrix from adjancency matrix
+    for src in range(num_pages):
+        if outgoing[src] == 0:
+            continue
+        for dst in range(num_pages):
+            if adj_matrix[src, dst] == 1:
+                # devide the pages vote based on the number of outgoing links
+                link_matrix[src, dst] = 1.0/outgoing[dst]
+
+    # modify the link matrix
+    S = np.ones_like(adj_matrix)/num_pages
+
+    m = 0.15
+
+    # modified link matrix
+    M = (1 - m) * link_matrix + m * S
+
+    x = np.ones(num_pages)/num_pages
+    max_iters = 10000
+    tol = 0.00000001
+
+    eigen_vector = power_method(M, x, max_iters, tol)
+
+    result = {}
+
+    for page_id, url in id_to_url.items():
+        result[page_id] = [eigen_vector[page_id], url]
+
+    return result
+    
     
