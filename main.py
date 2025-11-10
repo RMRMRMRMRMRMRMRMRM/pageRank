@@ -2,13 +2,6 @@ import os
 import functions as fn
 import numpy as np
 
-# filePath = os.path.join(os.getcwd(), "hollins.dat")
-
-# id_to_url, A = fn.get_adjancency_matrix(filePath=filePath)
-
-# print(f"the dictioanry looks like: {id_to_url}")
-# print(f"the matrix has: {np.count_nonzero(A)} nonzero entries")
-
 # test simple pageRank
 test = np.array([
     [0, 0, 1, 1],  
@@ -26,7 +19,8 @@ id_to_url = {
 
 ranking = fn.pageRank_simple(id_to_url, test)
 
-ranking_medium = fn.pageRank_medium(id_to_url, test)
+# test with weighted pagerank
+ranking_weighted = fn.pageRank(id_to_url, test)
 
 # test subweb
 test_subweb = np.array([
@@ -45,13 +39,25 @@ id_to_url_subweb = {
     4: "http://site5.com"
 }
 
-ranking_subwebs = fn.pageRank_medium(id_to_url_subweb, test_subweb)
+ranking_subwebs = fn.pageRank(id_to_url_subweb, test_subweb)
 
-print("=== Computed PageRank results ===")
-print(ranking) 
+# compute real data
+filePath = os.path.join(os.getcwd(), "hollins.dat")
 
-print("=== Computed medium PageRank results ===")
-print(ranking_medium)
+id_to_url, A = fn.get_adjancency_matrix(filePath=filePath)
 
-print("=== Computed subweb PageRank results ===")
-print(ranking_subwebs)
+ranking_main = fn.pageRank(id_to_url, A)
+
+
+# display results
+print("=== Computed non weighted PageRank results ===")
+fn.display_results(ranking)
+
+print("=== Computed weighted PageRank results ===")
+fn.display_results(ranking_weighted)
+
+print("=== Computed weighted PageRank results for a subweb ===")
+fn.display_results(ranking_subwebs)
+
+print("=== Computed weighted PageRank results for given data ===")
+fn.display_results(ranking_main)

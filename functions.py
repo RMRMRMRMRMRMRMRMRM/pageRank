@@ -23,8 +23,8 @@ def get_adjancency_matrix(filePath):
 
         # fill adjancency matrix from data
         for line in f:
-            idx, idy = map(int, line.split())
-            A[idx - 1, idy - 1] = 1.0
+            src, dst = map(int, line.split())
+            A[dst - 1, src - 1] = 1.0
 
         return id_to_url, A
 
@@ -76,6 +76,8 @@ def power_method(A, x, max_iters, tol):
 
     for _ in range(max_iters):
         x_next = np.dot(A, x)
+
+        # normalise in the L1 norm
         x_next /= x_next.sum()
 
         if np.linalg.norm(x_next - x, 1) < tol:
@@ -85,9 +87,9 @@ def power_method(A, x, max_iters, tol):
 
     return x
 
-def pageRank_medium(id_to_url, adj_matrix):
+def pageRank(id_to_url, adj_matrix):
     """
-    Rank websites medium, deals with subwebs
+    Rank websites, deals with subwebs
     input: id_to_url = dict of id and url
             adj_matrix = adjancency matrix
     output: result = dict {id:[score, url]}
@@ -124,8 +126,31 @@ def pageRank_medium(id_to_url, adj_matrix):
     result = {}
 
     for page_id, url in id_to_url.items():
-        result[page_id] = [eigen_vector[page_id], url]
+        result[page_id] = [eigen_vector[page_id - 1], url]
 
     return result
     
+def display_results(result_dict):
+    """
+    Display of the ranked websites
+    input: dict of results
+    """
+    ordered_dict = sorted(result_dict.items(), key=lambda item: item[1][0], reverse=True)
     
+    n = min(5, len(ordered_dict))
+    top_n = ordered_dict[:n]
+    bottom_n = ordered_dict[-n:]
+
+    print("=== Top pages ===")
+    print(140*"-")
+    for i in range(n):
+        print(f"ID:{top_n[i][0]:<5} | url: {top_n[i][1][1]:<90} | score: {top_n[i][1][0]:<.7f}")
+    print(140*"-")
+
+    print("=== Bottom pages ===")
+    print(140*"-")
+    for i in range(n):
+        print(f"ID:{bottom_n[-i - 1][0]:<5} | url: {bottom_n[-i - 1][1][1]:<90} | score: {bottom_n[-i - 1][1][0]:<.7f}")
+    print(140*"-")  
+
+    return
