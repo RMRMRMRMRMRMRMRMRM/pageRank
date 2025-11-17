@@ -2,3 +2,4 @@ Dockerfile
 googleFinalVersionFixed.pdf
 .Dockerignore
 .devcontainer
+__pycache__/

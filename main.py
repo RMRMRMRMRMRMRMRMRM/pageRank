@@ -17,10 +17,10 @@ id_to_url = {
     3: "http://site4.com"
 }
 
-ranking = fn.pageRank_simple(id_to_url, test)
+# ranking = fn.pageRank_simple(id_to_url, test)
 
-# test with weighted pagerank
-ranking_weighted = fn.pageRank(id_to_url, test)
+# # test with weighted pagerank
+# ranking_weighted = fn.pageRank(id_to_url, test)
 
 # test subweb
 test_subweb = np.array([
@@ -39,25 +39,30 @@ id_to_url_subweb = {
     4: "http://site5.com"
 }
 
-ranking_subwebs = fn.pageRank(id_to_url_subweb, test_subweb)
+# ranking_subwebs = fn.pageRank(id_to_url_subweb, test_subweb)
 
 # compute real data
 filePath = os.path.join(os.getcwd(), "hollins.dat")
 
 id_to_url, A = fn.get_adjancency_matrix(filePath=filePath)
-
 ranking_main = fn.pageRank(id_to_url, A)
 
+id_to_url_sparse, A_sparse = fn.get_adjancency_matrix_sparse(filePath)
+ranking_main_sparse = fn.pageRank_sparse(id_to_url_sparse, A_sparse)
 
-# display results
-print("=== Computed non weighted PageRank results ===")
-fn.display_results(ranking)
+# # display results
+# print("=== Computed non weighted PageRank results ===")
+# fn.display_results(ranking)
 
-print("=== Computed weighted PageRank results ===")
-fn.display_results(ranking_weighted)
+# print("=== Computed weighted PageRank results ===")
+# fn.display_results(ranking_weighted)
 
-print("=== Computed weighted PageRank results for a subweb ===")
-fn.display_results(ranking_subwebs)
+# print("=== Computed weighted PageRank results for a subweb ===")
+# fn.display_results(ranking_subwebs)
 
 print("=== Computed weighted PageRank results for given data ===")
 fn.display_results(ranking_main)
+
+print("=== Computed weighted PageRank SPARSE results for given data ===")
+fn.display_results(ranking_main_sparse)
+
